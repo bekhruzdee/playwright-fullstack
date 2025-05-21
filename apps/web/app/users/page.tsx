@@ -66,7 +66,7 @@ export default function UsersPage() {
       </form>
       <ul className="space-y-2">
         {users.map((user) => (
-          <li key={user.id} className="p-2 rounded">
+          <li key={user.id} className="p-2 rounded flex flex-col">
             <span className="font-medium">{user.name}</span>
             <span className="italic">{user.email}</span>
           </li>
