@@ -12,6 +12,7 @@ export default function PostsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [message, setMessage] = useState("");
 
   const fetchPosts = async () => {
     const res = await fetch("/api/posts");
@@ -28,7 +29,9 @@ export default function PostsPage() {
     });
     setTitle("");
     setContent("");
+    setMessage("Post added successfully!");
     fetchPosts();
+    setTimeout(() => setMessage(""), 3000);
   };
 
   useEffect(() => {
@@ -36,41 +39,64 @@ export default function PostsPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white p-6">
-      <h1 className="text-3xl font-semibold mb-4">Posts</h1>
-      <form onSubmit={handleSubmit} className="mb-6 space-y-4">
-        <div>
-          <input
-            type="text"
-            placeholder="Title"
-            className="border rounded px-3 py-2 w-full"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
-        <div>
-          <textarea
-            placeholder="Content"
-            className="border rounded px-3 py-2 w-full"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Add Post
-        </button>
-      </form>
-      <ul className="space-y-2">
-        {posts.map((post) => (
-          <li key={post.id} className="p-2 rounded flex flex-col">
-            <span className="text-xl font-bold">{post.title}</span>
-            <span className="mt-2 text-gray-700">{post.content}</span>
-          </li>
-        ))}
-      </ul>
+    <div className="min-h-screen bg-gray-100 p-6">
+      <div className="max-w-2xl mx-auto">
+        <h1 className="text-4xl font-bold text-center text-blue-700 mb-6">Posts Page</h1>
+
+        {/* Toast-like message */}
+        {message && (
+          <div className="bg-green-100 text-green-800 px-4 py-2 rounded mb-4 shadow">
+            {message}
+          </div>
+        )}
+
+        {/* Form block */}
+        <form onSubmit={handleSubmit} className="bg-white rounded shadow p-6 mb-8 space-y-4">
+          <h2 className="text-2xl font-semibold text-gray-800">Add New Post</h2>
+          <div>
+            <input
+              type="text"
+              placeholder="Title"
+              className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <textarea
+              placeholder="Content"
+              className="border rounded px-3 py-2 w-full h-24 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          >
+            Add Post
+          </button>
+        </form>
+
+        {/* Posts list */}
+        {posts.length === 0 ? (
+          <p className="text-center text-gray-600">No posts available yet.</p>
+        ) : (
+          <ul className="space-y-4">
+            {posts.map((post) => (
+              <li
+                key={post.id}
+                className="bg-white p-4 rounded shadow hover:shadow-md transition"
+              >
+                <h3 className="text-xl font-bold text-gray-800">{post.title}</h3>
+                <p className="mt-2 text-gray-700">{post.content}</p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
