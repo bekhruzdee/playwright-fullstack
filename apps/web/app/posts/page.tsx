@@ -39,28 +39,30 @@ export default function PostsPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-4xl font-bold text-center text-blue-700 mb-6">
+    <div className="min-h-screen bg-gradient-to-tr from-purple-100 via-white to-blue-100 p-6">
+      <div className="max-w-3xl mx-auto">
+        <h1 className="text-5xl font-extrabold text-center text-purple-700 mb-10 tracking-tight">
           Posts Page
         </h1>
 
         {message && (
-          <div className="bg-green-100 text-green-800 px-4 py-2 rounded mb-4 shadow">
+          <div className="bg-green-100 text-green-900 px-6 py-3 rounded-lg mb-6 shadow-md text-center font-medium animate-fadeIn">
             {message}
           </div>
         )}
 
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded shadow p-6 mb-8 space-y-4"
+          className="bg-white rounded-2xl shadow-lg p-8 mb-12 space-y-6 max-w-xl mx-auto"
         >
-          <h2 className="text-2xl font-semibold text-gray-800">Add New Post</h2>
+          <h2 className="text-3xl font-semibold text-gray-900 mb-4">
+            Add New Post
+          </h2>
           <div>
             <input
               type="text"
               placeholder="Title"
-              className="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="border border-gray-300 rounded-lg px-4 py-3 w-full text-lg placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-purple-300 transition"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
@@ -69,7 +71,7 @@ export default function PostsPage() {
           <div>
             <textarea
               placeholder="Content"
-              className="border rounded px-3 py-2 w-full h-24 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="border border-gray-300 rounded-lg px-4 py-3 w-full h-28 text-lg placeholder-gray-400 resize-none focus:outline-none focus:ring-4 focus:ring-purple-300 transition"
               value={content}
               onChange={(e) => setContent(e.target.value)}
               required
@@ -77,30 +79,48 @@ export default function PostsPage() {
           </div>
           <button
             type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+            className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 active:bg-purple-800 transition font-semibold w-full"
           >
             Add Post
           </button>
         </form>
 
         {posts.length === 0 ? (
-          <p className="text-center text-gray-600">No posts available yet.</p>
+          <p className="text-center text-gray-500 text-xl font-medium">
+            No posts available yet.
+          </p>
         ) : (
-          <ul className="space-y-4">
+          <ul className="space-y-8 max-w-3xl mx-auto">
             {posts.map((post) => (
               <li
                 key={post.id}
-                className="bg-white p-4 rounded shadow hover:shadow-md transition"
+                className="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition cursor-pointer"
               >
-                <h3 className="text-xl font-bold text-gray-800">
+                <h3 className="text-2xl font-bold text-purple-800">
                   {post.title}
                 </h3>
-                <p className="mt-2 text-gray-700">{post.content}</p>
+                <p className="mt-3 text-gray-700 leading-relaxed">{post.content}</p>
               </li>
             ))}
           </ul>
         )}
       </div>
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.5s ease forwards;
+        }
+      `}</style>
     </div>
   );
 }
