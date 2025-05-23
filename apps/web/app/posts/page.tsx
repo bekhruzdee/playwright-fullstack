@@ -41,17 +41,20 @@ export default function PostsPage() {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-4xl font-bold text-center text-blue-700 mb-6">Posts Page</h1>
+        <h1 className="text-4xl font-bold text-center text-blue-700 mb-6">
+          Posts Page
+        </h1>
 
-        {/* Toast-like message */}
         {message && (
           <div className="bg-green-100 text-green-800 px-4 py-2 rounded mb-4 shadow">
             {message}
           </div>
         )}
 
-        {/* Form block */}
-        <form onSubmit={handleSubmit} className="bg-white rounded shadow p-6 mb-8 space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white rounded shadow p-6 mb-8 space-y-4"
+        >
           <h2 className="text-2xl font-semibold text-gray-800">Add New Post</h2>
           <div>
             <input
@@ -80,7 +83,6 @@ export default function PostsPage() {
           </button>
         </form>
 
-        {/* Posts list */}
         {posts.length === 0 ? (
           <p className="text-center text-gray-600">No posts available yet.</p>
         ) : (
@@ -90,7 +92,9 @@ export default function PostsPage() {
                 key={post.id}
                 className="bg-white p-4 rounded shadow hover:shadow-md transition"
               >
-                <h3 className="text-xl font-bold text-gray-800">{post.title}</h3>
+                <h3 className="text-xl font-bold text-gray-800">
+                  {post.title}
+                </h3>
                 <p className="mt-2 text-gray-700">{post.content}</p>
               </li>
             ))}
