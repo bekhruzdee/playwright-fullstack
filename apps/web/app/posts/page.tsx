@@ -22,16 +22,26 @@ export default function PostsPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await fetch("/api/posts", {
+    const newPost = { title, content };
+
+    const res = await fetch("/api/posts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, content }),
+      body: JSON.stringify(newPost),
     });
-    setTitle("");
-    setContent("");
-    setMessage("Post added successfully!");
-    fetchPosts();
-    setTimeout(() => setMessage(""), 3000);
+
+    if (res.ok) {
+      setTitle("");
+      setContent("");
+      setMessage("Post added successfully!");
+      fetchPosts();
+      setTimeout(() => setMessage(""), 3000);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    setPosts((prev) => prev.filter((post) => post.id !== id));
+    await fetch(`/api/posts/${id}`, { method: "DELETE" });
   };
 
   useEffect(() => {
@@ -58,25 +68,21 @@ export default function PostsPage() {
           <h2 className="text-3xl font-semibold text-gray-900 mb-4">
             Add New Post
           </h2>
-          <div>
-            <input
-              type="text"
-              placeholder="Title"
-              className="border border-gray-300 rounded-lg px-4 py-3 w-full text-lg placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-purple-300 transition"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <textarea
-              placeholder="Content"
-              className="border border-gray-300 rounded-lg px-4 py-3 w-full h-28 text-lg placeholder-gray-400 resize-none focus:outline-none focus:ring-4 focus:ring-purple-300 transition"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              required
-            />
-          </div>
+          <input
+            type="text"
+            placeholder="Title"
+            className="border border-gray-300 rounded-lg px-4 py-3 w-full text-lg placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-purple-300 transition"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+          <textarea
+            placeholder="Content"
+            className="border border-gray-300 rounded-lg px-4 py-3 w-full h-28 text-lg placeholder-gray-400 resize-none focus:outline-none focus:ring-4 focus:ring-purple-300 transition"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            required
+          />
           <button
             type="submit"
             className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 active:bg-purple-800 transition font-semibold w-full"
@@ -94,7 +100,7 @@ export default function PostsPage() {
             {posts.map((post) => (
               <li
                 key={post.id}
-                className="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition cursor-pointer"
+                className="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition relative group"
               >
                 <h3 className="text-2xl font-bold text-purple-800">
                   {post.title}
@@ -102,6 +108,12 @@ export default function PostsPage() {
                 <p className="mt-3 text-gray-700 leading-relaxed">
                   {post.content}
                 </p>
+                <button
+                  onClick={() => handleDelete(post.id)}
+                  className="absolute top-4 right-4 text-red-500 hover:text-red-700 font-semibold text-sm opacity-0 group-hover:opacity-100 transition"
+                >
+                  Delete
+                </button>
               </li>
             ))}
           </ul>
