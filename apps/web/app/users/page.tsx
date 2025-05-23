@@ -97,7 +97,9 @@ export default function UsersPage() {
                 key={user.id}
                 className="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition cursor-pointer"
               >
-                <h3 className="text-2xl font-bold text-indigo-800">{user.name}</h3>
+                <h3 className="text-2xl font-bold text-indigo-800">
+                  {user.name}
+                </h3>
                 <p className="mt-2 text-gray-700 italic">{user.email}</p>
               </li>
             ))}
